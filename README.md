@@ -4,6 +4,11 @@
 
 Este projeto demonstra como configurar um ESP32 para conectar-se a uma rede Wi-Fi e enviar e receber dados via MQTT. A simulação é realizada no [Wokwi](https://wokwi.com/), um simulador online de hardware. O desenvolvimento é feito utilizando o Visual Studio Code com a extensão PlatformIO.
 
+## Adaptação
+
+Esse repositório é uma adaptação deste tutorial.[https://docs.google.com/document/d/1y6IfbOT_rAimZx41tNBL9NlscoB1ObjgaPmy2g4UGO0/edit?usp=sharing](https://docs.google.com/document/d/1y6IfbOT_rAimZx41tNBL9NlscoB1ObjgaPmy2g4UGO0/edit?usp=sharing) 
+
+
 ## Funcionalidades
 
 - **Conexão Wi-Fi**: O ESP32 conecta-se automaticamente à rede Wi-Fi especificada.
