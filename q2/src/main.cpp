@@ -1,46 +1,43 @@
-/////////--------IOT--------FIAP------------///////////
-
+//  RASHID SYIHAB ADHIKA
+//  2200022019
 #include <Arduino.h>
+#include <LiquidCrystal_I2C.h>
+LiquidCrystal_I2C lcd(0x27, 16, 2);
 
-
-
-// Configurações de Hardware
-
-#define PIN_LED 15
+const int trigpin = 25;
+const int echopin = 26;
+long durasi;
+int jarak;
 
 
 void setup() {
   Serial.begin(115200);
-
-  pinMode(PIN_LED, OUTPUT);
-  digitalWrite(PIN_LED, LOW);
+  lcd.init();
+  lcd.clear();
+  lcd.backlight();
+  pinMode(trigpin, OUTPUT);
+  pinMode(echopin, INPUT);
 
 }
 
 void loop() {
-  digitalWrite(PIN_LED, HIGH);
-  delay(400);
-  digitalWrite(PIN_LED, LOW);
-  delay(400);
-  Serial.println("piscando...");
+  digitalWrite(trigpin, LOW);
+  delayMicroseconds(2);
+  digitalWrite(trigpin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigpin, LOW);
+
+  durasi = pulseIn(echopin, HIGH);
+  jarak = durasi * 0.03408/2;
+  Serial.print(jarak);
+  Serial.println(" cm");
+  lcd.setCursor(0, 0);
+  lcd.print("Jarak :");
+  lcd.setCursor(8, 0);
+  lcd.print(jarak);
+  lcd.setCursor(13, 0);
+  lcd.print("cm");
+  delay(500);
+  lcd.clear();
+
 }
-
-
-
-
-
-
-
-
-
-///// --------variação para publicar MQTT apenas se houver mudança do sensor
-
-// // Variáveis globais para armazenar os últimos valores de temperatura e umidade
-// float lastTemperature = NAN;
-// float lastHumidity = NAN;
-      // // Verificar se os novos valores de temperatura e umidade são diferentes dos últimos valores armazenados
-      // if (sensorValues.temperature != lastTemperature || sensorValues.humidity != lastHumidity) {
-
-        // // Atualizar os valores armazenados com os novos valores
-        // lastTemperature = sensorValues.temperature;
-        // lastHumidity = sensorValues.humidity;

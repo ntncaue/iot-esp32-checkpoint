@@ -32,7 +32,9 @@ DHTesp dht;
 unsigned long publishUpdate = 0;
 TempAndHumidity sensorValues;
 const int TAMANHO = 200;
-
+float lastTemperature = NAN;
+float lastHumidity = NAN;
+bool lastLedState = LOW;
 
 // Protótipos de funções
 void updateSensorValues();
@@ -151,10 +153,20 @@ void loop() {
     publishUpdate = millis();
     updateSensorValues();
 
-    if (!isnan(sensorValues.temperature) && !isnan(sensorValues.humidity)) {
+    bool changed =
+      sensorValues.temperature != lastTemperature ||
+      sensorValues.humidity != lastHumidity ||
+      digitalRead(PIN_LED) != lastLedState;
+
+    if (!isnan(sensorValues.temperature) && !isnan(sensorValues.humidity) && changed) {
+      lastTemperature = sensorValues.temperature;
+      lastHumidity = sensorValues.humidity;
+      lastLedState = digitalRead(PIN_LED);
+
       StaticJsonDocument<TAMANHO> doc;
       doc["temperatura"] = sensorValues.temperature;
       doc["umidade"] = sensorValues.humidity;
+      doc["status_led"] = lastLedState ? "on" : "off";
 
       char buffer[TAMANHO];
       serializeJson(doc, buffer);
